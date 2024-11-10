@@ -1,0 +1,8 @@
+convert: A utility to convert integers to a specified base.
+Usage: convert [-b BASE] [-r START FINISH]
+Options:
+  -b BASE          Specify the base for conversion (default is 16).
+                   Valid range for BASE is 2 to 36.
+  -r START FINISH  Convert numbers in the range from START to FINISH.
+                   START and FINISH must be long integers.
+  --help           Show this help message.
