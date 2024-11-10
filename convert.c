@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     // Parse and initialize command line arguments
     parse_command_line(argc, argv, &base, &start, &finish, &range_mode);
 
-    // Perform the conversion based on mode
+    // Perform the conversion 
     if (range_mode) {
         convert_range(start, finish, base);
     } else {
