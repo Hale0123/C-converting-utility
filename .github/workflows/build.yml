@@ -19,7 +19,11 @@ jobs:
       - name: Build ctest executable
         run: gcc --coverage -o ctest convert.c util.c cmdline.c
 
-      # Step 3: Run the test_script and generate gcov reports
+      #Step 3: Build the .gcda files
+      - name: Build .gcda files
+        run: ./ctest
+
+      # Step 4: Run the test_script and generate gcov reports
       - name: Run tests and generate gcov reports
         run: |
           ./test_script > test_results.txt; # Run the test_script and save output
@@ -27,7 +31,7 @@ jobs:
           gcov ctest-util.c;                # Generate gcov for util.c
           gcov ctest-cmdline.c;             # Generate gcov for cmdline.c
 
-      # Step 4: Upload the test results and coverage reports
+      # Step 5: Upload the test results and coverage reports
       - name: Upload test results and gcov reports
         uses: actions/upload-artifact@v4
         with:
