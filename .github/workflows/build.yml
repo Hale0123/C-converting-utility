@@ -1,0 +1,39 @@
+name: Build and Test convert
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - uses: actions/checkout@v4
+
+      # Step 1: Build the convert executable
+      - name: Build convert executable
+        run: gcc --coverage -o convert convert.c util.c cmdline.c
+
+      # Step 2: Build the ctest executable (for testing purposes)
+      - name: Build ctest executable
+        run: gcc --coverage -o ctest convert.c util.c cmdline.c
+
+      # Step 3: Run the test_script and generate gcov reports
+      - name: Run tests and generate gcov reports
+        run: |
+          ./test_script > test_results.txt; # Run the test_script and save output
+          gcov ctest-convert.c;             # Generate gcov for convert.c
+          gcov ctest-util.c;                # Generate gcov for util.c
+          gcov ctest-cmdline.c;             # Generate gcov for cmdline.c
+
+      # Step 4: Upload the test results and coverage reports
+      - name: Upload test results and gcov reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: test_results_and_gcov
+          path: |
+            test_results.txt           # Test case results
+            ctest-convert.c.gcov       # Coverage report for convert.c
+            ctest-util.c.gcov          # Coverage report for util.c
+            ctest-cmdline.c.gcov       # Coverage report for cmdline.c
